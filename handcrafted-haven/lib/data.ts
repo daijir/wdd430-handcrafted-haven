@@ -1,13 +1,37 @@
 import type { Product, Seller } from "@/lib/definitions";
 
 const sellers: Seller[] = [
-  { id: "seller-1", name: "Alice's Atelier", email: "alice@example.com" },
-  { id: "seller-2", name: "Bob's Bodega", email: "bob@example.com" },
-  { id: "seller-3", name: "Charlie's Crafts", email: "charlie@example.com" },
+  {
+    id: "seller-1",
+    name: "Alice's Atelier",
+    email: "alice@example.com",
+    bio: "I create cozy, handwoven textiles and ceramics inspired by nature and slow living.",
+    profileImageUrl: "https://via.placeholder.com/300x300.png?text=Alice",
+  },
+  {
+    id: "seller-2",
+    name: "Bob's Bodega",
+    email: "bob@example.com",
+    bio: "I specialize in reclaimed-wood furniture and rustic home décor with a modern twist.",
+    profileImageUrl: "https://via.placeholder.com/300x300.png?text=Bob",
+  },
+  {
+    id: "seller-3",
+    name: "Charlie's Crafts",
+    email: "charlie@example.com",
+    bio: "Paper goods, lino prints, and illustration pieces made in small batches.",
+    profileImageUrl: "https://via.placeholder.com/300x300.png?text=Charlie",
+  },
 ];
 
 export const getSellers = async (): Promise<Seller[]> => {
   return sellers;
+};
+
+export const getSellerById = async (
+  id: string
+): Promise<Seller | undefined> => {
+  return sellers.find((seller) => seller.id === id);
 };
 
 // TODO: fetch products from an API
