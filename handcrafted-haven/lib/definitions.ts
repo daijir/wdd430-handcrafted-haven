@@ -12,16 +12,8 @@ export type Seller = {
   id: string;
   name: string;
   email: string;
-};
-
-export type Review = {
-  id: string;
-  productId: string;
-  userId: string;
-  userName: string;
-  rating: number; // 1-5
-  text: string;
-  timestamp: Date;
+  bio?: string;
+  profileImageUrl?: string;
 };
 
 export type ReviewStats = {
