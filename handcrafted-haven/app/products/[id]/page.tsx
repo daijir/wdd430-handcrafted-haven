@@ -1,14 +1,15 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getProducts, getSellers } from "@/lib/data";
+import { getReviewsByProductId, getReviewStats } from "@/lib/reviews-data";
 import type { Product, Seller } from "@/lib/definitions";
-import Link from "next/link";
+import { ReviewsSection } from "./_components/reviews-section";
+import { StarRating } from "./_components/star-rating";
 
 type ProductDetailPageProps = {
   params: Promise<{ id: string }>;
 };
 
-// This function simulates fetching a single product by its ID.
 async function getProductDetails(
   id: string
 ): Promise<{ product: Product; seller: Seller } | undefined> {
@@ -22,7 +23,6 @@ async function getProductDetails(
   const sellers = await getSellers();
   const seller = sellers.find((s) => s.id === product.sellerId);
 
-  // In a real app, you might want to handle a missing seller differently
   if (!seller) {
     return undefined;
   }
@@ -37,10 +37,14 @@ export default async function ProductDetailPage({
   const details = await getProductDetails(id);
 
   if (!details) {
-    notFound(); // If product doesn't exist, show a 404 page.
+    notFound();
   }
 
   const { product, seller } = details;
+  
+  // Fetch reviews and stats
+  const reviews = await getReviewsByProductId(id);
+  const stats = await getReviewStats(id);
 
   return (
     <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -58,6 +62,16 @@ export default async function ProductDetailPage({
           <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-gray-900">
             {product.name}
           </h1>
+          
+          {stats.totalReviews > 0 && (
+            <div className="mt-2 flex items-center gap-2">
+              <StarRating rating={stats.averageRating} size="sm" showNumber />
+              <span className="text-sm text-gray-500">
+                ({stats.totalReviews} {stats.totalReviews === 1 ? "review" : "reviews"})
+              </span>
+            </div>
+          )}
+          
           <p className="mt-2 text-sm text-gray-500">{product.category}</p>
           <p className="mt-1 text-sm text-gray-500">
             Sold by: <span className="font-medium text-indigo-600">{seller.name}</span>
@@ -72,6 +86,12 @@ export default async function ProductDetailPage({
           </div>
         </div>
       </div>
+
+      <ReviewsSection 
+        productId={id} 
+        initialReviews={reviews}
+        initialStats={stats}
+      />
     </main>
   );
 }
