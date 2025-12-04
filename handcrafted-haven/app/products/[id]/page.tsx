@@ -2,6 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getProducts, getSellers } from "@/lib/data";
 import type { Product, Seller } from "@/lib/definitions";
+import Link from "next/link";
 
 type ProductDetailPageProps = {
   params: Promise<{ id: string }>;
