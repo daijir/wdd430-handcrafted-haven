@@ -16,6 +16,16 @@ export type Seller = {
   profileImageUrl?: string;
 };
 
+export type Review = {
+  id: string;
+  productId: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  text: string;
+  timestamp: Date;
+};
+
 export type ReviewStats = {
   averageRating: number;
   totalReviews: number;

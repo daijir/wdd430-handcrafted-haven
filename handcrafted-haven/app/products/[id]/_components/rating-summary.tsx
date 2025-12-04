@@ -1,4 +1,4 @@
-import type { ReviewStats } from "@/lib/definitions";
+import type { ReviewStats } from "../../../../lib/definitions";
 import { StarRating } from "./star-rating";
 
 type RatingSummaryProps = {
@@ -30,8 +30,8 @@ export const RatingSummary = ({ stats }: RatingSummaryProps) => {
         <div className="flex-1">
           {[5, 4, 3, 2, 1].map((rating) => {
             const count = stats.ratingDistribution[rating as keyof typeof stats.ratingDistribution];
-            const percentage = stats.totalReviews > 0 
-              ? (count / stats.totalReviews) * 100 
+            const percentage = stats.totalReviews > 0
+              ? (count / stats.totalReviews) * 100
               : 0;
 
             return (
