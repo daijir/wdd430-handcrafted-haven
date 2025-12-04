@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProducts, getSellers } from "@/lib/data";
 import { getReviewsByProductId, getReviewStats } from "@/lib/reviews-data";
@@ -41,7 +42,7 @@ export default async function ProductDetailPage({
   }
 
   const { product, seller } = details;
-  
+
   // Fetch reviews and stats
   const reviews = await getReviewsByProductId(id);
   const stats = await getReviewStats(id);
@@ -62,7 +63,7 @@ export default async function ProductDetailPage({
           <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-gray-900">
             {product.name}
           </h1>
-          
+
           {stats.totalReviews > 0 && (
             <div className="mt-2 flex items-center gap-2">
               <StarRating rating={stats.averageRating} size="sm" showNumber />
@@ -71,10 +72,10 @@ export default async function ProductDetailPage({
               </span>
             </div>
           )}
-          
+
           <p className="mt-2 text-sm text-gray-500">{product.category}</p>
           <p className="mt-1 text-sm text-gray-500">
-            Sold by: <span className="font-medium text-indigo-600">{seller.name}</span>
+            Sold by: <Link href={`/seller/${seller.id}`} className="font-medium text-indigo-600 hover:text-indigo-500">{seller.name}</Link>
           </p>
           <p className="mt-4 text-3xl text-gray-900">${product.price}</p>
           <p className="mt-6 text-base text-gray-700">{product.description}</p>
@@ -87,8 +88,8 @@ export default async function ProductDetailPage({
         </div>
       </div>
 
-      <ReviewsSection 
-        productId={id} 
+      <ReviewsSection
+        productId={id}
         initialReviews={reviews}
         initialStats={stats}
       />
