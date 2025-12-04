@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Avatar } from "@/app/components/Avatar";
 
 const CURRENT_SELLER_ID = "seller-1"; // TODO: replace with real auth later
 
@@ -99,16 +100,9 @@ export default function SellerProfileEditPage() {
                         onChange={(e) => setProfileImageUrl(e.target.value)}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
-                    {profileImageUrl && (
-                        <div className="mt-3 w-24 h-24 rounded-full overflow-hidden bg-gray-200">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                                src={profileImageUrl}
-                                alt="Profile preview"
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                    )}
+
+                    <Avatar name={displayName} url={profileImageUrl} size={96} />
+
                 </div>
 
                 <button
@@ -127,3 +121,36 @@ export default function SellerProfileEditPage() {
         </main>
     );
 }
+
+const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    setStatus(null);
+
+    // VALIDATION
+    if (displayName.trim().length < 2) {
+        return setStatus("Name must be at least 2 characters long.");
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        return setStatus("Please enter a valid email address.");
+    }
+
+    if (bio.length > 300) {
+        return setStatus("Bio must be 300 characters or less.");
+    }
+
+    if (profileImageUrl && !/^https?:\/\/\S+\.\S+/.test(profileImageUrl)) {
+        return setStatus("Profile image must be a valid URL starting with http or https.");
+    }
+
+    // Mock save
+    console.log("Saving profile...", {
+        displayName,
+        email,
+        bio,
+        profileImageUrl,
+    });
+
+    setStatus("Profile saved successfully! (mock)");
+};

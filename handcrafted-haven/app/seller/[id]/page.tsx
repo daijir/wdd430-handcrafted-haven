@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getSellerById, getProducts } from "@/lib/data";
 import { ProductCard } from "@/app/products/_components/product-card";
+import { Avatar } from "@/app/components/Avatar";
 
 type SellerPageProps = {
     params: Promise<{ id: string }>;
@@ -53,7 +54,7 @@ export default async function SellerPage({ params }: SellerPageProps) {
                 </h2>
 
                 {sellerProducts.length === 0 ? (
-                    <p className="text-gray-600">This seller has no products yet.</p>
+                    <p className="text-gray-600">This seller has no products yet D:</p>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {sellerProducts.map((product) => (

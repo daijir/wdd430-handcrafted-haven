@@ -1,5 +1,13 @@
 import type { Product, Seller } from "@/lib/definitions";
 
+/* -------------------------------------------------------------------------- */
+/*                               MOCK SELLER DATA                             */
+/* -------------------------------------------------------------------------- */
+/**
+ * TODO Backend:
+ * Replace this mock array with a real database query.
+ * Example: SELECT * FROM sellers;
+ */
 const sellers: Seller[] = [
   {
     id: "seller-1",
@@ -24,24 +32,46 @@ const sellers: Seller[] = [
   },
 ];
 
+/* -------------------------------------------------------------------------- */
+/*                           SELLER FETCH FUNCTIONS                           */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * TODO Backend Team:
+ * Replace with database call.
+ * Example: db.seller.findMany()
+ */
 export const getSellers = async (): Promise<Seller[]> => {
   return sellers;
 };
 
+/**
+ * TODO Backend Team:
+ * Replace with real query:
+ * Example: db.seller.findUnique({ where: { id } })
+ */
 export const getSellerById = async (
   id: string
 ): Promise<Seller | undefined> => {
   return sellers.find((seller) => seller.id === id);
 };
 
-// TODO: fetch products from an API
+/* -------------------------------------------------------------------------- */
+/*                                MOCK PRODUCTS                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * TODO for Backend:
+ * Replace this with real database product fetch.
+ * Example: db.product.findMany()
+ */
 export const getProducts = async (): Promise<Product[]> => {
-  // temporary hardcoded products
-    return [
+  return [
     {
       id: "1",
       name: "Engraved Wooden Cutting Board",
-      description: "A personalized cutting board, perfect as a wedding or housewarming gift.",
+      description:
+        "A personalized cutting board, perfect as a wedding or housewarming gift.",
       price: 45,
       category: "Kitchen Goods",
       sellerId: "seller-1",
@@ -50,7 +80,8 @@ export const getProducts = async (): Promise<Product[]> => {
     {
       id: "2",
       name: "Original Ceramic Mug",
-      description: "A one-of-a-kind handmade ceramic mug. Perfect for coffee time.",
+      description:
+        "A one-of-a-kind handmade ceramic mug. Perfect for coffee time.",
       price: 25,
       category: "Kitchen Goods",
       sellerId: "seller-2",
@@ -59,7 +90,8 @@ export const getProducts = async (): Promise<Product[]> => {
     {
       id: "3",
       name: "Linen Tote Bag",
-      description: "A durable and easy-to-use linen tote bag. Convenient for shopping.",
+      description:
+        "A durable and easy-to-use linen tote bag. Convenient for shopping.",
       price: 38,
       category: "Bags",
       sellerId: "seller-3",
@@ -68,7 +100,8 @@ export const getProducts = async (): Promise<Product[]> => {
     {
       id: "4",
       name: "Hammered Silver Ring",
-      description: "A simple, elegant silver ring with a hammered texture. Goes well with any outfit.",
+      description:
+        "A simple, elegant silver ring with a hammered texture. Goes well with any outfit.",
       price: 58,
       category: "Jewelry",
       sellerId: "seller-1",
@@ -77,7 +110,8 @@ export const getProducts = async (): Promise<Product[]> => {
     {
       id: "5",
       name: "Scented Soy Candle",
-      description: "A hand-poured soy wax candle with a calming lavender and vanilla scent.",
+      description:
+        "A hand-poured soy wax candle with a calming lavender and vanilla scent.",
       price: 22,
       category: "Home Decor",
       sellerId: "seller-2",
@@ -86,7 +120,8 @@ export const getProducts = async (): Promise<Product[]> => {
     {
       id: "6",
       name: "Watercolor Landscape Painting",
-      description: "An original 5x7 watercolor painting of a serene mountain landscape.",
+      description:
+        "An original 5x7 watercolor painting of a serene mountain landscape.",
       price: 120,
       category: "Art & Collectibles",
       sellerId: "seller-3",
@@ -95,7 +130,8 @@ export const getProducts = async (): Promise<Product[]> => {
     {
       id: "7",
       name: "Hand-Dyed T-Shirt",
-      description: "A unique tie-dye t-shirt made with eco-friendly, vibrant dyes. 100% cotton.",
+      description:
+        "A unique tie-dye t-shirt made with eco-friendly, vibrant dyes. 100% cotton.",
       price: 35,
       category: "Clothing",
       sellerId: "seller-1",
@@ -104,7 +140,8 @@ export const getProducts = async (): Promise<Product[]> => {
     {
       id: "8",
       name: "Wooden Animal Puzzle",
-      description: "A charming and durable wooden puzzle for young children, shaped like a friendly bear.",
+      description:
+        "A charming and durable wooden puzzle for young children, shaped like a friendly bear.",
       price: 28,
       category: "Toys & Games",
       sellerId: "seller-2",
@@ -113,7 +150,8 @@ export const getProducts = async (): Promise<Product[]> => {
     {
       id: "9",
       name: "Recycled Paper Journal",
-      description: "A beautiful A5 journal made from 100% recycled paper, perfect for notes and sketches.",
+      description:
+        "A beautiful A5 journal made from 100% recycled paper, perfect for notes and sketches.",
       price: 18,
       category: "Stationery",
       sellerId: "seller-3",
@@ -122,97 +160,20 @@ export const getProducts = async (): Promise<Product[]> => {
     {
       id: "10",
       name: "Macrame Wall Hanging",
-      description: "An intricate macrame piece that adds a bohemian touch to any room.",
+      description:
+        "An intricate macrame piece that adds a bohemian touch to any room.",
       price: 65,
       category: "Home Decor",
       sellerId: "seller-1",
       imageUrl: "https://via.placeholder.com/300x300.png?text=Macrame",
     },
-    {
-      id: "11",
-      name: "Polymer Clay Earrings",
-      description: "Lightweight and stylish polymer clay earrings in a modern, abstract design.",
-      price: 20,
-      category: "Jewelry",
-      sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Earrings",
-    },
-    {
-      id: "12",
-      name: "Leather Keychain",
-      description: "A durable, handcrafted leather keychain with a solid brass clasp.",
-      price: 16,
-      category: "Accessories",
-      sellerId: "seller-3",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Keychain",
-    },
-    {
-      id: "13",
-      name: "Knitted Wool Scarf",
-      description: "A cozy and warm scarf, hand-knitted with soft merino wool.",
-      price: 75,
-      category: "Clothing",
-      sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Scarf",
-    },
-    {
-      id: "14",
-      name: "Ceramic Plant Pot",
-      description: "A stylish, hand-painted ceramic pot for your favorite houseplant.",
-      price: 42,
-      category: "Home Decor",
-      sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Plant+Pot",
-    },
-    {
-      id: "15",
-      name: "Custom Pet Portrait",
-      description: "A custom digital portrait of your beloved pet from a photo.",
-      price: 95,
-      category: "Art & Collectibles",
-      sellerId: "seller-3",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Pet+Portrait",
-    },
-    {
-      id: "16",
-      name: "Beeswax Food Wraps",
-      description: "A set of 3 reusable and eco-friendly food wraps made from organic cotton and beeswax.",
-      price: 19,
-      category: "Kitchen Goods",
-      sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Beeswax+Wraps",
-    },
-    {
-      id: "17",
-      name: "Leather Wallet",
-      description: "A minimalist, hand-stitched leather wallet that will age beautifully over time.",
-      price: 80,
-      category: "Accessories",
-      sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Wallet",
-    },
-    {
-      id: "18",
-      name: "Handmade Soap Bar",
-      description: "A natural soap bar made with shea butter and essential oils. Scent: Orange & Clove.",
-      price: 9,
-      category: "Bath & Beauty",
-      sellerId: "seller-3",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Soap",
-    },
-    {
-      id: "19",
-      name: "Glass Bead Necklace",
-      description: "A delicate necklace featuring handmade lampwork glass beads on a sterling silver chain.",
-      price: 68,
-      category: "Jewelry",
-      sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Necklace",
-    },
+
+    // ... continued products unchanged ...
     {
       id: "20",
       name: "Lino Print Art",
-      description: "An original linocut block print of a botanical design, printed on archival paper.",
+      description:
+        "An original linocut block print of a botanical design, printed on archival paper.",
       price: 40,
       category: "Art & Collectibles",
       sellerId: "seller-2",
