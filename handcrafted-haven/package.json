@@ -12,6 +12,8 @@
     "@heroicons/react": "^2.2.0",
     "bcrypt": "^6.0.0",
     "clsx": "^2.1.1",
+    "cookie-parser": "^1.4.7",
+    "jsonwebtoken": "^9.0.3",
     "next": "^15.5.7",
     "next-auth": "5.0.0-beta.30",
     "postgres": "^3.4.7",
