@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "@/app/_context/auth-context";
-import { useProducts } from "@/app/_context/product-context";
-import { Product } from "@/lib/definitions";
+import { upload } from '@vercel/blob/client';
 
 export function AddProductButton({ sellerId }: { sellerId: string }) {
     const { user } = useAuth();
@@ -33,20 +32,13 @@ export function AddProductButton({ sellerId }: { sellerId: string }) {
         setIsLoading(true);
 
         try {
-            let imageUrl = "";
-
-            const uploadData = new FormData();
-            uploadData.append("file", file);
-
-            const res = await fetch("/api/upload", {
-                method: "POST",
-                body: uploadData,
+            // Client-side upload to Vercel Blob (bypasses 4.5MB server limit)
+            const newBlob = await upload(file.name, file, {
+                access: 'public',
+                handleUploadUrl: '/api/upload',
             });
 
-            if (!res.ok) throw new Error("Upload failed");
-
-            const result = await res.json();
-            imageUrl = result.filePath;
+            const imageUrl = newBlob.url;
 
             const productData = new FormData();
             productData.append("name", formData.name);
@@ -56,7 +48,7 @@ export function AddProductButton({ sellerId }: { sellerId: string }) {
             productData.append("imageUrl", imageUrl);
             productData.append("sellerId", sellerId);
 
-            // Import dynamically or assume it's available via props/import
+            // Import dynamically to avoid server action issues in client component during build sometimes
             const { createProduct } = await import("@/lib/actions");
             const response = await createProduct(productData);
 
@@ -76,7 +68,7 @@ export function AddProductButton({ sellerId }: { sellerId: string }) {
 
         } catch (error) {
             console.error(error);
-            alert("An error occurred.");
+            alert("An error occurred during upload or creation.");
         } finally {
             setIsLoading(false);
         }
@@ -184,7 +176,7 @@ export function AddProductButton({ sellerId }: { sellerId: string }) {
                                     onChange={handleFileChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 />
-                                <p className="text-xs text-gray-500 mt-1">Image will be uploaded to the server.</p>
+                                <p className="text-xs text-gray-500 mt-1">Images upload directly to Vercel (Client Upload, no file size limit).</p>
                             </div>
 
                             <div className="pt-4 flex justify-end gap-3">

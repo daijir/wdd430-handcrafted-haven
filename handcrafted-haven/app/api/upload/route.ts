@@ -1,34 +1,32 @@
-import { put } from '@vercel/blob';
-import { NextRequest, NextResponse } from 'next/server';
+import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
+import { NextResponse } from 'next/server';
 
-export const runtime = 'nodejs';
+export async function POST(request: Request): Promise<NextResponse> {
+    const body = (await request.json()) as HandleUploadBody;
 
-export async function POST(request: NextRequest) {
     try {
-        const formData = await request.formData();
-        const file = formData.get('file') as File;
-
-        if (!file) {
-            return NextResponse.json(
-                { error: 'No file received.' },
-                { status: 400 }
-            );
-        }
-
-        // Upload to Vercel Blob
-        const blob = await put(file.name, file, {
-            access: 'public',
+        const jsonResponse = await handleUpload({
+            body,
+            request,
+            onBeforeGenerateToken: async (pathname, clientPayload) => {
+                // You can add authentication checks here
+                return {
+                    allowedContentTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+                    tokenPayload: JSON.stringify({
+                        // optional, sent to your server on upload completion
+                    }),
+                };
+            },
+            onUploadCompleted: async ({ blob, tokenPayload }) => {
+                console.log('blob uploaded', blob.url);
+            },
         });
 
-        return NextResponse.json({
-            message: 'Success',
-            filePath: blob.url  // Returning 'url' as 'filePath' to match frontend expectation
-        });
+        return NextResponse.json(jsonResponse);
     } catch (error) {
-        console.error("Upload Error Details:", error);
         return NextResponse.json(
-            { error: 'Error occurred while processing request.', details: String(error) },
-            { status: 500 }
+            { error: (error as Error).message },
+            { status: 400 },
         );
     }
 }
