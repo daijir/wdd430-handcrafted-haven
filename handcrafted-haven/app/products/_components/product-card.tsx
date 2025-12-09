@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Product } from "../../../lib/definitions";
+import type { Product } from "../../lib/definitions";
 
 type ProductCardProps = {
   product: Product;

@@ -1,4 +1,4 @@
-import type { Product, Seller } from "@/lib/definitions";
+import type { Product, Seller } from "@/app/lib/definitions";
 
 const sellers: Seller[] = [
   { id: "seller-1", name: "Alice's Atelier", email: "alice@example.com" },

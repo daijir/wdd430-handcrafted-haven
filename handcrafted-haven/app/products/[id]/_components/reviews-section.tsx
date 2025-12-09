@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { Review, ReviewStats } from "../../../../lib/definitions";
+import type { Review, ReviewStats } from "../../../lib/definitions";
 import { RatingSummary } from "./rating-summary";
 import { ReviewForm } from "./review-form";
 import { ReviewList } from "./review-list";

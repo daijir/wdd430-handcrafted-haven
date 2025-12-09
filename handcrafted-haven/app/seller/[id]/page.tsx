@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getSellerById, getProducts } from "@/lib/data";
+import { getSellerById, getProducts } from "@/app/lib/data";
 import { ProductCard } from "@/app/products/_components/product-card";
 
 type SellerPageProps = {

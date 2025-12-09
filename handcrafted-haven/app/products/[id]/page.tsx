@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProducts, getSellers } from "@/lib/data";
-import { getReviewsByProductId, getReviewStats } from "@/lib/reviews-data";
-import type { Product, Seller } from "@/lib/definitions";
+import { getProducts, getSellers } from "@/app/lib/data";
+import { getReviewsByProductId, getReviewStats } from "@/app/lib/reviews-data";
+import type { Product, Seller } from "@/app/lib/definitions";
 import { ReviewsSection } from "./_components/reviews-section";
 import { StarRating } from "./_components/star-rating";
 

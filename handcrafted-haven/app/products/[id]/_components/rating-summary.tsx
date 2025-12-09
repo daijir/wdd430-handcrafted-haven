@@ -1,4 +1,4 @@
-import type { ReviewStats } from "../../../../lib/definitions";
+import type { ReviewStats } from "../../../lib/definitions";
 import { StarRating } from "./star-rating";
 
 type RatingSummaryProps = {
