@@ -16,6 +16,14 @@ export type Seller = {
   profileImageUrl?: string;
 };
 
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: 'buyer' | 'seller';
+};
+
 export type Review = {
   id: string;
   productId: string;

@@ -7,48 +7,90 @@ import { Product } from "@/lib/definitions";
 
 export function AddProductButton({ sellerId }: { sellerId: string }) {
     const { user } = useAuth();
-    const { addProduct } = useProducts();
     const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         price: "",
         category: "",
         description: "",
-        imageUrl: "",
     });
+    const [file, setFile] = useState<File | null>(null);
 
     // Only show button if current user is the seller
-    if (user.id !== sellerId) {
+    if (!user || user.id !== sellerId) {
         return null;
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const newProduct: Product = {
-            id: "new-" + Date.now(),
-            sellerId: sellerId,
-            name: formData.name,
-            price: parseFloat(formData.price),
-            category: formData.category,
-            description: formData.description,
-            imageUrl: formData.imageUrl || "https://via.placeholder.com/300x300.png?text=New+Product",
-        };
 
-        addProduct(newProduct);
-        setIsOpen(false);
-        setFormData({
-            name: "",
-            price: "",
-            category: "",
-            description: "",
-            imageUrl: "",
-        });
-        alert("Product added successfully! (Client-side mock)");
+        if (!file) {
+            alert("Please select an image.");
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            let imageUrl = "";
+
+            const uploadData = new FormData();
+            uploadData.append("file", file);
+
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: uploadData,
+            });
+
+            if (!res.ok) throw new Error("Upload failed");
+
+            const result = await res.json();
+            imageUrl = result.filePath;
+
+            const productData = new FormData();
+            productData.append("name", formData.name);
+            productData.append("price", formData.price);
+            productData.append("category", formData.category);
+            productData.append("description", formData.description);
+            productData.append("imageUrl", imageUrl);
+            productData.append("sellerId", sellerId);
+
+            // Import dynamically or assume it's available via props/import
+            const { createProduct } = await import("@/lib/actions");
+            const response = await createProduct(productData);
+
+            if (response.message === 'Success') {
+                alert("Product added successfully!");
+                setIsOpen(false);
+                setFormData({
+                    name: "",
+                    price: "",
+                    category: "",
+                    description: "",
+                });
+                setFile(null);
+            } else {
+                alert("Failed to add product: " + response.message);
+            }
+
+        } catch (error) {
+            console.error(error);
+            alert("An error occurred.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setFile(e.target.files[0]);
+        }
     };
 
     return (
@@ -135,15 +177,14 @@ export function AddProductButton({ sellerId }: { sellerId: string }) {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Image URL (Optional)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
                                 <input
-                                    type="text"
-                                    name="imageUrl"
-                                    value={formData.imageUrl}
-                                    onChange={handleChange}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                    placeholder="https://..."
                                 />
+                                <p className="text-xs text-gray-500 mt-1">Image will be uploaded to the server.</p>
                             </div>
 
                             <div className="pt-4 flex justify-end gap-3">
@@ -151,14 +192,16 @@ export function AddProductButton({ sellerId }: { sellerId: string }) {
                                     type="button"
                                     onClick={() => setIsOpen(false)}
                                     className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+                                    disabled={isLoading}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                                    disabled={isLoading}
+                                    className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                                 >
-                                    Create Product
+                                    {isLoading ? 'Creating...' : 'Create Product'}
                                 </button>
                             </div>
                         </form>

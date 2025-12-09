@@ -6,21 +6,21 @@ const sellers: Seller[] = [
     name: "Alice's Atelier",
     email: "alice@example.com",
     bio: "I create cozy, handwoven textiles and ceramics inspired by nature and slow living.",
-    profileImageUrl: "https://via.placeholder.com/300x300.png?text=Alice",
+    profileImageUrl: "https://placehold.co/300x300/png?text=Alice",
   },
   {
     id: "seller-2",
     name: "Bob's Bodega",
     email: "bob@example.com",
     bio: "I specialize in reclaimed-wood furniture and rustic home décor with a modern twist.",
-    profileImageUrl: "https://via.placeholder.com/300x300.png?text=Bob",
+    profileImageUrl: "https://placehold.co/300x300/png?text=Bob",
   },
   {
     id: "seller-3",
     name: "Charlie's Crafts",
     email: "charlie@example.com",
     bio: "Paper goods, lino prints, and illustration pieces made in small batches.",
-    profileImageUrl: "https://via.placeholder.com/300x300.png?text=Charlie",
+    profileImageUrl: "https://placehold.co/300x300/png?text=Charlie",
   },
 ];
 
@@ -37,7 +37,7 @@ export const getSellerById = async (
 // TODO: fetch products from an API
 export const getProducts = async (): Promise<Product[]> => {
   // temporary hardcoded products
-    return [
+  return [
     {
       id: "1",
       name: "Engraved Wooden Cutting Board",
@@ -45,7 +45,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 45,
       category: "Kitchen Goods",
       sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Cutting+Board",
+      imageUrl: "/images/wooden-cutting-board.jpg",
     },
     {
       id: "2",
@@ -54,7 +54,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 25,
       category: "Kitchen Goods",
       sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Ceramic+Mug",
+      imageUrl: "/images/ceramic-mug.jpg",
     },
     {
       id: "3",
@@ -63,7 +63,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 38,
       category: "Bags",
       sellerId: "seller-3",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Linen+Tote+Bag",
+      imageUrl: "/images/tote-bag.jpg",
     },
     {
       id: "4",
@@ -72,7 +72,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 58,
       category: "Jewelry",
       sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Silver+Ring",
+      imageUrl: "/images/hammered-silver-ring.jpg",
     },
     {
       id: "5",
@@ -81,7 +81,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 22,
       category: "Home Decor",
       sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Soy+Candle",
+      imageUrl: "/images/scented-soy-candle.jpg",
     },
     {
       id: "6",
@@ -90,7 +90,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 120,
       category: "Art & Collectibles",
       sellerId: "seller-3",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Painting",
+      imageUrl: "/images/watercolor-landscape-painting.jpg",
     },
     {
       id: "7",
@@ -99,7 +99,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 35,
       category: "Clothing",
       sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=T-Shirt",
+      imageUrl: "/images/hand-dyed-t-shirt.jpg",
     },
     {
       id: "8",
@@ -108,7 +108,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 28,
       category: "Toys & Games",
       sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Puzzle",
+      imageUrl: "/images/wooden-animal-puzzle.jpg",
     },
     {
       id: "9",
@@ -117,7 +117,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 18,
       category: "Stationery",
       sellerId: "seller-3",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Journal",
+      imageUrl: "/images/recycled-paper-journal.jpg",
     },
     {
       id: "10",
@@ -126,7 +126,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 65,
       category: "Home Decor",
       sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Macrame",
+      imageUrl: "/images/macrame-wall-hanging.jpg",
     },
     {
       id: "11",
@@ -135,7 +135,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 20,
       category: "Jewelry",
       sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Earrings",
+      imageUrl: "/images/polymer-clay-earring.jpg",
     },
     {
       id: "12",
@@ -144,7 +144,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 16,
       category: "Accessories",
       sellerId: "seller-3",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Keychain",
+      imageUrl: "/images/leather-keychain.jpg",
     },
     {
       id: "13",
@@ -153,7 +153,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 75,
       category: "Clothing",
       sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Scarf",
+      imageUrl: "/images/knitted-wool-scarf.jpg",
     },
     {
       id: "14",
@@ -162,7 +162,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 42,
       category: "Home Decor",
       sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Plant+Pot",
+      imageUrl: "/images/ceramic-plant-pot.jpg",
     },
     {
       id: "15",
@@ -171,7 +171,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 95,
       category: "Art & Collectibles",
       sellerId: "seller-3",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Pet+Portrait",
+      imageUrl: "/images/custom-pet-portrait.jpg",
     },
     {
       id: "16",
@@ -180,7 +180,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 19,
       category: "Kitchen Goods",
       sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Beeswax+Wraps",
+      imageUrl: "/images/beeswax-food-wraps.jpg",
     },
     {
       id: "17",
@@ -189,7 +189,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 80,
       category: "Accessories",
       sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Wallet",
+      imageUrl: "/images/leather-wallet.jpg",
     },
     {
       id: "18",
@@ -198,7 +198,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 9,
       category: "Bath & Beauty",
       sellerId: "seller-3",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Soap",
+      imageUrl: "/images/handmade-soap-bar.jpg",
     },
     {
       id: "19",
@@ -207,7 +207,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 68,
       category: "Jewelry",
       sellerId: "seller-1",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Necklace",
+      imageUrl: "/images/glass-bead-necklace.jpg",
     },
     {
       id: "20",
@@ -216,7 +216,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 40,
       category: "Art & Collectibles",
       sellerId: "seller-2",
-      imageUrl: "https://via.placeholder.com/300x300.png?text=Lino+Print",
+      imageUrl: "/images/lino-print-art.jpg",
     },
   ];
 };

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useAuth } from "@/app/_context/auth-context";
 import type { Review, ReviewStats } from "../../../../lib/definitions";
 import { RatingSummary } from "./rating-summary";
 import { ReviewForm } from "./review-form";
@@ -17,6 +18,7 @@ export const ReviewsSection = ({
   initialReviews,
   initialStats,
 }: ReviewsSectionProps) => {
+  const { user } = useAuth();
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
   const [stats, setStats] = useState<ReviewStats>(initialStats);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -68,7 +70,21 @@ export const ReviewsSection = ({
       <RatingSummary stats={stats} />
 
       <div className="mt-8">
-        <ReviewForm productId={productId} onReviewSubmitted={refreshReviews} />
+        {user?.role === 'buyer' ? (
+          <ReviewForm productId={productId} onReviewSubmitted={refreshReviews} />
+        ) : (
+          <div className="p-6 bg-gray-50 border border-gray-100 rounded-lg text-center">
+            {!user || user.role === 'guest' ? (
+              <p className="text-gray-600">
+                Please <span className="font-semibold">log in as a buyer</span> (top right) to leave a review.
+              </p>
+            ) : (
+              <p className="text-gray-600">
+                Sellers cannot leave reviews on products.
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="mt-8">

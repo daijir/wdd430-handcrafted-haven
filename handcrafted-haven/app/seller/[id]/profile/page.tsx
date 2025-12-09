@@ -1,25 +1,37 @@
 "use client";
 
-import { useState } from "react";
-
-const CURRENT_SELLER_ID = "seller-1"; // TODO: replace with real auth later
+import { useEffect, useState, use } from "react";
+import { getSellerById } from "@/lib/data";
+import { useParams } from "next/navigation";
 
 export default function SellerProfileEditPage() {
-    // Temporary hardcoded initial values to match seller-1
-    const [displayName, setDisplayName] = useState("Alice's Atelier");
-    const [email, setEmail] = useState("alice@example.com");
-    const [bio, setBio] = useState(
-        "I create cozy, handwoven textiles and ceramics inspired by nature and slow living."
-    );
-    const [profileImageUrl, setProfileImageUrl] = useState(
-        "https://via.placeholder.com/300x300.png?text=Alice"
-    );
+    const params = useParams();
+    const id = params?.id as string;
+
+    const [displayName, setDisplayName] = useState("");
+    const [email, setEmail] = useState("");
+    const [bio, setBio] = useState("");
+    const [profileImageUrl, setProfileImageUrl] = useState("");
     const [status, setStatus] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (!id) return;
+        getSellerById(id).then((seller) => {
+            if (seller) {
+                setDisplayName(seller.name);
+                setEmail(seller.email);
+                setBio(seller.bio);
+                setProfileImageUrl(seller.profileImageUrl);
+            }
+            setLoading(false);
+        });
+    }, [id]);
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         // Later: call a real API route or server action.
-        console.log("Saving profile for:", CURRENT_SELLER_ID, {
+        console.log("Saving profile for:", id, {
             displayName,
             email,
             bio,
@@ -27,6 +39,8 @@ export default function SellerProfileEditPage() {
         });
         setStatus("Profile saved (mock). This will be wired to the backend later.");
     };
+
+    if (loading) return <div>Loading...</div>;
 
     return (
         <main className="max-w-2xl mx-auto px-4 py-8">

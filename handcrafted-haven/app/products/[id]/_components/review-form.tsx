@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/app/_context/auth-context";
 
 type ReviewFormProps = {
   productId: string;
@@ -8,10 +9,17 @@ type ReviewFormProps = {
 };
 
 export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) => {
+  const { user } = useAuth();
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState(user.name);
+
+  useEffect(() => {
+    if (user.name && user.name !== "Guest") {
+      setUserName(user.name);
+    }
+  }, [user.name]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -109,11 +117,10 @@ export const ReviewForm = ({ productId, onReviewSubmitted }: ReviewFormProps) =>
               disabled={isSubmitting}
             >
               <svg
-                className={`w-8 h-8 ${
-                  star <= (hoveredRating || rating)
+                className={`w-8 h-8 ${star <= (hoveredRating || rating)
                     ? "text-yellow-400"
                     : "text-gray-300"
-                } transition-colors`}
+                  } transition-colors`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >

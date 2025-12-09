@@ -20,14 +20,18 @@ function DataInitializer({ children }: { children: ReactNode }) {
     return <>{children}</>;
 }
 
+import { SessionProvider } from "next-auth/react";
+
 export function Providers({ children }: { children: ReactNode }) {
     return (
-        <AuthProvider>
-            <ProductProvider>
-                <DataInitializer>
-                    {children}
-                </DataInitializer>
-            </ProductProvider>
-        </AuthProvider>
+        <SessionProvider>
+            <AuthProvider>
+                <ProductProvider>
+                    <DataInitializer>
+                        {children}
+                    </DataInitializer>
+                </ProductProvider>
+            </AuthProvider>
+        </SessionProvider>
     );
 }

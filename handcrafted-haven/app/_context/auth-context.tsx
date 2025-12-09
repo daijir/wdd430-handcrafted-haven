@@ -1,60 +1,38 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
-import { Seller } from "@/lib/definitions";
-
-type UserRole = "guest" | "buyer" | "seller";
+import { createContext, useContext, ReactNode } from "react";
+import { useSession, signOut } from "next-auth/react";
 
 type User = {
-    id: string; // "guest" or specific ID
+    id: string;
     name: string;
-    role: UserRole;
-    sellerId?: string; // If role is seller, which seller are they?
+    role: string;
+    sellerId?: string;
 };
 
 type AuthContextType = {
-    user: User;
-    loginAsSeller: (sellerId: string) => void;
-    loginAsBuyer: () => void;
+    user: User | null;
     logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User>({
-        id: "guest",
-        name: "Guest",
-        role: "guest",
-    });
+    const { data: session } = useSession();
 
-    const loginAsSeller = (sellerId: string) => {
-        setUser({
-            id: sellerId, // effectively the user ID is the seller ID for simplicity
-            name: "Seller (" + sellerId + ")",
-            role: "seller",
-            sellerId: sellerId,
-        });
-    };
-
-    const loginAsBuyer = () => {
-        setUser({
-            id: "buyer-1",
-            name: "Buyer User",
-            role: "buyer",
-        });
-    };
+    const user: User | null = session?.user ? {
+        id: (session.user as any).id || "",
+        name: session.user.name || "",
+        role: (session.user as any).role || "guest",
+        sellerId: (session.user as any).role === 'seller' ? (session.user as any).id : undefined,
+    } : null;
 
     const logout = () => {
-        setUser({
-            id: "guest",
-            name: "Guest",
-            role: "guest",
-        });
+        signOut({ callbackUrl: '/login' });
     };
 
     return (
-        <AuthContext.Provider value={{ user, loginAsSeller, loginAsBuyer, logout }}>
+        <AuthContext.Provider value={{ user, logout }}>
             {children}
         </AuthContext.Provider>
     );

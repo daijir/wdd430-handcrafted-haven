@@ -2,17 +2,10 @@
 
 import Link from "next/link";
 import { useAuth } from "@/app/_context/auth-context";
-import { useEffect, useState } from "react";
-import { getSellers } from "@/lib/data";
-import { Seller } from "@/lib/definitions";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 export function Header() {
-    const { user, loginAsSeller, loginAsBuyer, logout } = useAuth();
-    const [sellers, setSellers] = useState<Seller[]>([]);
-
-    useEffect(() => {
-        getSellers().then(setSellers);
-    }, []);
+    const { user, logout } = useAuth();
 
     return (
         <header className="bg-white border-b border-gray-200">
@@ -23,32 +16,20 @@ export function Header() {
                     </Link>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <div className="text-sm text-gray-600">
-                        Current User: <span className="font-semibold">{user.name}</span>
+                {user && (
+                    <div className="flex items-center gap-4">
+                        <div className="text-sm text-gray-600">
+                            Logged in as: <span className="font-semibold">{user.name}</span>
+                        </div>
+                        <button
+                            onClick={logout}
+                            className="p-2 text-gray-500 hover:text-red-600 transition-colors"
+                            title="Log out"
+                        >
+                            <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
+                        </button>
                     </div>
-
-                    <select
-                        className="text-sm border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        value={user.role === 'seller' ? user.sellerId : user.role}
-                        onChange={(e) => {
-                            const value = e.target.value;
-                            if (value === "guest") logout();
-                            else if (value === "buyer") loginAsBuyer();
-                            else loginAsSeller(value);
-                        }}
-                    >
-                        <option value="guest">Guest</option>
-                        <option value="buyer">Buyer</option>
-                        <optgroup label="Sellers">
-                            {sellers.map((seller) => (
-                                <option key={seller.id} value={seller.id}>
-                                    {seller.name}
-                                </option>
-                            ))}
-                        </optgroup>
-                    </select>
-                </div>
+                )}
             </div>
         </header>
     );
