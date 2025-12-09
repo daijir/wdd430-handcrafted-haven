@@ -45,7 +45,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 45,
       category: "Kitchen Goods",
       sellerId: "seller-1",
-      imageUrl: "/images/wooden-cutting-board.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/wooden-cutting-board.jpg",
     },
     {
       id: "2",
@@ -54,7 +54,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 25,
       category: "Kitchen Goods",
       sellerId: "seller-2",
-      imageUrl: "/images/ceramic-mug.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/ceramic-mug.jpg",
     },
     {
       id: "3",
@@ -63,7 +63,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 38,
       category: "Bags",
       sellerId: "seller-3",
-      imageUrl: "/images/tote-bag.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/tote-bag.jpg",
     },
     {
       id: "4",
@@ -72,7 +72,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 58,
       category: "Jewelry",
       sellerId: "seller-1",
-      imageUrl: "/images/hammered-silver-ring.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/hammered-silver-ring.jpg",
     },
     {
       id: "5",
@@ -81,7 +81,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 22,
       category: "Home Decor",
       sellerId: "seller-2",
-      imageUrl: "/images/scented-soy-candle.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/scented-soy-candle.jpg",
     },
     {
       id: "6",
@@ -90,7 +90,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 120,
       category: "Art & Collectibles",
       sellerId: "seller-3",
-      imageUrl: "/images/watercolor-landscape-painting.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/watercolor-landscape-painting.jpg",
     },
     {
       id: "7",
@@ -99,7 +99,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 35,
       category: "Clothing",
       sellerId: "seller-1",
-      imageUrl: "/images/hand-dyed-t-shirt.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/hand-dyed-t-shirt.jpg",
     },
     {
       id: "8",
@@ -108,7 +108,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 28,
       category: "Toys & Games",
       sellerId: "seller-2",
-      imageUrl: "/images/wooden-animal-puzzle.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/wooden-animal-puzzle.jpg",
     },
     {
       id: "9",
@@ -117,7 +117,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 18,
       category: "Stationery",
       sellerId: "seller-3",
-      imageUrl: "/images/recycled-paper-journal.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/recycled-paper-journal.jpg",
     },
     {
       id: "10",
@@ -126,7 +126,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 65,
       category: "Home Decor",
       sellerId: "seller-1",
-      imageUrl: "/images/macrame-wall-hanging.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/macrame-wall-hanging.jpg",
     },
     {
       id: "11",
@@ -135,7 +135,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 20,
       category: "Jewelry",
       sellerId: "seller-2",
-      imageUrl: "/images/polymer-clay-earring.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/polymer-clay-earring.jpg",
     },
     {
       id: "12",
@@ -144,7 +144,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 16,
       category: "Accessories",
       sellerId: "seller-3",
-      imageUrl: "/images/leather-keychain.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/leather-keychain.jpg",
     },
     {
       id: "13",
@@ -153,7 +153,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 75,
       category: "Clothing",
       sellerId: "seller-1",
-      imageUrl: "/images/knitted-wool-scarf.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/knitted-wool-scarf.jpg",
     },
     {
       id: "14",
@@ -162,7 +162,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 42,
       category: "Home Decor",
       sellerId: "seller-2",
-      imageUrl: "/images/ceramic-plant-pot.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/ceramic-plant-pot.jpg",
     },
     {
       id: "15",
@@ -171,7 +171,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 95,
       category: "Art & Collectibles",
       sellerId: "seller-3",
-      imageUrl: "/images/custom-pet-portrait.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/custom-pet-portrait.jpg",
     },
     {
       id: "16",
@@ -180,7 +180,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 19,
       category: "Kitchen Goods",
       sellerId: "seller-1",
-      imageUrl: "/images/beeswax-food-wraps.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/beeswax-food-wraps.jpg",
     },
     {
       id: "17",
@@ -189,7 +189,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 80,
       category: "Accessories",
       sellerId: "seller-2",
-      imageUrl: "/images/leather-wallet.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/leather-wallet.jpg",
     },
     {
       id: "18",
@@ -198,7 +198,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 9,
       category: "Bath & Beauty",
       sellerId: "seller-3",
-      imageUrl: "/images/handmade-soap-bar.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/handmade-soap-bar.jpg",
     },
     {
       id: "19",
@@ -207,7 +207,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 68,
       category: "Jewelry",
       sellerId: "seller-1",
-      imageUrl: "/images/glass-bead-necklace.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/glass-bead-necklace.jpg",
     },
     {
       id: "20",
@@ -216,7 +216,7 @@ export const getProducts = async (): Promise<Product[]> => {
       price: 40,
       category: "Art & Collectibles",
       sellerId: "seller-2",
-      imageUrl: "/images/lino-print-art.jpg",
+      imageUrl: "https://vj4d7jdwkfg7t0js.public.blob.vercel-storage.com/products/1765303487456/lino-print-art.jpg",
     },
   ];
 };
