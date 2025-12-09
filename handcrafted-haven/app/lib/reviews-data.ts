@@ -1,4 +1,4 @@
-import type { Review, ReviewStats } from "@/lib/definitions";
+import type { Review, ReviewStats } from "@/app/lib/definitions";
 
 // In-memory storage for reviews (replace with database in production)
 let reviews: Review[] = [

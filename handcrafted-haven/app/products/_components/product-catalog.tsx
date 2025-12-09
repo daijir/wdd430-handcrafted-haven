@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import { ProductCard } from "./product-card";
-import type { Product } from "../../../lib/definitions";
+import type { Product } from "../../lib/definitions";
 
 type ProductCatalogProps = {
     products: Product[];
@@ -63,7 +63,7 @@ const ProductCatalog = ({ products }: ProductCatalogProps) => {
                     placeholder="Search by name..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="flex-grow max-w-sm p-2 border border-gray-300 rounded-md"
+                    className="grow max-w-sm p-2 border border-gray-300 rounded-md"
                 />
                 <select
                     value={selectedCategory}

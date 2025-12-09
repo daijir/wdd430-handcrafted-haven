@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { addReview, getReviewsByProductId } from "@/lib/reviews-data";
+import { addReview, getReviewsByProductId } from "@/app/lib/reviews-data";
 
 export async function POST(request: NextRequest) {
   try {

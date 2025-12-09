@@ -1,6 +1,17 @@
-import type { Product, Seller } from "@/lib/definitions";
+import type { Product, Seller, User } from "@/app/lib/definitions";
+/******** We need to create a users section in the database. */
+export const users: User[] = [
+  {
+    id: '410544b2-4001-4271-9855-fec4b6a6442a',
+    name: 'User',
+    email: 'user@nextmail.com',
+    password: '123456',
+  },
+];
 
-const sellers: Seller[] = [
+/***************************************************************** */
+
+export const sellers: Seller[] = [
   {
     id: "seller-1",
     name: "Alice's Atelier",
@@ -23,6 +34,16 @@ const sellers: Seller[] = [
     profileImageUrl: "https://via.placeholder.com/300x300.png?text=Charlie",
   },
 ];
+
+export const getUsers = async (): Promise<User[]> => {
+  return users;
+};
+
+export const getUserById = async (
+  id: string
+): Promise<User | undefined> => {
+  return users.find((user) => user.id === id);
+};
 
 export const getSellers = async (): Promise<Seller[]> => {
   return sellers;
