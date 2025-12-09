@@ -1,0 +1,1 @@
+POSTGRES_URL=postgres://wdd430db_user:hb9VWpxR4IKJbw8NDlk5CeRkw0E1fvrQ@dpg-d4mb8g2dbo4c73aiumlg-a.oregon-postgres.render.com/wdd430db?sslmode=require

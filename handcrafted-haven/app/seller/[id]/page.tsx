@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getSellerById, getProducts } from "@/lib/data";
-import { ProductCard } from "@/app/products/_components/product-card";
+import { getSellerById } from "@/lib/data";
+import { SellerProductList } from "./_components/seller-product-list";
 
 type SellerPageProps = {
     params: Promise<{ id: string }>;
@@ -14,11 +14,6 @@ export default async function SellerPage({ params }: SellerPageProps) {
     if (!seller) {
         notFound();
     }
-
-    const allProducts = await getProducts();
-    const sellerProducts = allProducts.filter(
-        (product) => product.sellerId === seller.id
-    );
 
     return (
         <main className="max-w-5xl mx-auto px-4 py-8">
@@ -47,21 +42,7 @@ export default async function SellerPage({ params }: SellerPageProps) {
                 </div>
             </section>
 
-            <section className="mt-10">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                    Products by {seller.name}
-                </h2>
-
-                {sellerProducts.length === 0 ? (
-                    <p className="text-gray-600">This seller has no products yet.</p>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {sellerProducts.map((product) => (
-                            <ProductCard key={product.id} product={product} />
-                        ))}
-                    </div>
-                )}
-            </section>
+            <SellerProductList sellerId={seller.id} sellerName={seller.name} />
         </main>
     );
 }
