@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProducts, getSellers } from "@/lib/data";
-import { getReviewsByProductId, getReviewStats } from "@/lib/reviews-data";
-import type { Product, Seller } from "@/lib/definitions";
+import { getReviewsFromDB } from "@/lib/actions";
+import type { Product, Seller, Review } from "@/lib/definitions";
 import { ReviewsSection } from "./_components/reviews-section";
 import { StarRating } from "./_components/star-rating";
 
@@ -43,9 +43,31 @@ export default async function ProductDetailPage({
 
   const { product, seller } = details;
 
-  // Fetch reviews and stats
-  const reviews = await getReviewsByProductId(id);
-  const stats = await getReviewStats(id);
+  // Fetch reviews from database and calculate stats
+  const reviewsRaw = await getReviewsFromDB(id);
+  const reviews: Review[] = reviewsRaw.map((r: Record<string, unknown>) => ({
+    id: r.id as string,
+    productId: r.productId as string,
+    userId: r.userId as string,
+    userName: r.userName as string,
+    rating: r.rating as number,
+    text: r.text as string,
+    timestamp: new Date(r.timestamp as string | Date),
+  }));
+
+  // Calculate stats from reviews
+  const totalReviews = reviews.length;
+  const averageRating = totalReviews > 0
+    ? reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+    : 0;
+  const ratingDistribution = reviews.reduce(
+    (dist, r) => {
+      dist[r.rating as keyof typeof dist]++;
+      return dist;
+    },
+    { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+  );
+  const stats = { averageRating, totalReviews, ratingDistribution };
 
   return (
     <main className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">

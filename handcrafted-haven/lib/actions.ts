@@ -114,3 +114,69 @@ export async function createProduct(formData: FormData) {
     revalidatePath('/products');
     return { message: 'Success' };
 }
+
+const CreateReviewSchema = z.object({
+    productId: z.string().min(1, 'Product ID is required'),
+    userId: z.string().min(1, 'User ID is required'),
+    userName: z.string().min(1, 'User name is required'),
+    rating: z.coerce.number().min(1).max(5),
+    text: z.string().min(1, 'Review text is required'),
+});
+
+export async function createReview(data: {
+    productId: string;
+    userId: string;
+    userName: string;
+    rating: number;
+    text: string;
+}) {
+    const validatedFields = CreateReviewSchema.safeParse(data);
+
+    if (!validatedFields.success) {
+        return { success: false, message: 'Missing or invalid fields.' };
+    }
+
+    const { productId, userId, userName, rating, text } = validatedFields.data;
+    const id = crypto.randomUUID();
+
+    try {
+        await sql`
+            INSERT INTO reviews (id, product_id, user_id, user_name, rating, text)
+            VALUES (${id}, ${productId}, ${userId}, ${userName}, ${rating}, ${text})
+        `;
+    } catch (error) {
+        console.error('Failed to create review:', error);
+        return { success: false, message: 'Database Error: Failed to Create Review.' };
+    }
+
+    revalidatePath(`/products/${productId}`);
+    return {
+        success: true,
+        message: 'Success',
+        review: {
+            id,
+            productId,
+            userId,
+            userName,
+            rating,
+            text,
+            timestamp: new Date(),
+        }
+    };
+}
+
+export async function getReviewsFromDB(productId: string) {
+    try {
+        const reviews = await sql`
+            SELECT id, product_id as "productId", user_id as "userId", user_name as "userName", 
+                   rating, text, created_at as "timestamp"
+            FROM reviews 
+            WHERE product_id = ${productId}
+            ORDER BY created_at DESC
+        `;
+        return reviews;
+    } catch (error) {
+        console.error('Failed to fetch reviews:', error);
+        return [];
+    }
+}

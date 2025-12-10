@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { addReview, getReviewsByProductId } from "@/lib/reviews-data";
+import { createReview, getReviewsFromDB } from "@/lib/actions";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Validate required fields
     if (!body.productId || !body.userId || !body.userName || !body.rating || !body.text) {
       return NextResponse.json(
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const review = await addReview({
+    const result = await createReview({
       productId: body.productId,
       userId: body.userId,
       userName: body.userName,
@@ -29,7 +29,14 @@ export async function POST(request: NextRequest) {
       text: body.text,
     });
 
-    return NextResponse.json(review, { status: 201 });
+    if (!result.success) {
+      return NextResponse.json(
+        { error: result.message },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(result.review, { status: 201 });
   } catch (error) {
     console.error("Error creating review:", error);
     return NextResponse.json(
@@ -51,7 +58,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const reviews = await getReviewsByProductId(productId);
+    const reviews = await getReviewsFromDB(productId);
     return NextResponse.json(reviews);
   } catch (error) {
     console.error("Error fetching reviews:", error);
