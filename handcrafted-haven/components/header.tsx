@@ -10,17 +10,32 @@ export function Header() {
     return (
         <header className="bg-white border-b border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                
+                {/* Logo / Home */}
                 <div className="flex items-center">
                     <Link href="/" className="text-xl font-bold text-gray-900">
                         Handcrafted Haven
                     </Link>
                 </div>
 
-                {user && (
+                {/* Right Side Controls */}
+                {user ? (
                     <div className="flex items-center gap-4">
+
+                        {/* My Profile Button */}
+                        <Link
+                            href={`/seller/${user.id}`}
+                            className="px-4 py-2 rounded-md bg-[var(--color-sage)] text-[var(--color-dark-brown)] font-semibold hover:bg-[var(--color-light-sage)] transition"
+                        >
+                            My Profile
+                        </Link>
+
+                        {/* Logged-In Label */}
                         <div className="text-sm text-gray-600">
                             Logged in as: <span className="font-semibold">{user.name}</span>
                         </div>
+
+                        {/* Logout Button */}
                         <button
                             onClick={logout}
                             className="p-2 text-gray-500 hover:text-red-600 transition-colors"
@@ -29,6 +44,14 @@ export function Header() {
                             <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
                         </button>
                     </div>
+                ) : (
+                    // If not logged in, show Login link
+                    <Link
+                        href="/login"
+                        className="px-4 py-2 rounded-md bg-[var(--color-sage)] text-[var(--color-dark-brown)] font-semibold hover:bg-[var(--color-light-sage)] transition"
+                    >
+                        Login
+                    </Link>
                 )}
             </div>
         </header>
