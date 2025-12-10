@@ -1,26 +1,149 @@
+/* ---------------------------------------------------------
+   Tailwind Base
+--------------------------------------------------------- */
 @import "tailwindcss";
 
+/* ---------------------------------------------------------
+   Brand Colors
+--------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light Mode Colors */
+  --color-cream: #F0EAD2;
+  --color-light-sage: #DDE5B6;
+  --color-sage: #ADC178;
+
+  --color-brown: #A98467;
+  --color-dark-brown: #6C584C;
+
+  /* Derived Theme Tokens */
+  --background: var(--color-cream);
+  --foreground: var(--color-dark-brown);
+
+  --card: #ffffff;
+  --border: var(--color-brown);
+
+  /* Font */
+  --font-sans: 'Noto Sans', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* ---------------------------------------------------------
+   Dark Mode (optional, but included)
+--------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #1a1a1a;
+    --foreground: #f5f5f5;
+
+    --card: #242424;
+    --border: #444;
   }
 }
 
+/* ---------------------------------------------------------
+   Tailwind Theme Injection
+--------------------------------------------------------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-sans: var(--font-sans);
+
+  --color-cream: var(--color-cream);
+  --color-light-sage: var(--color-light-sage);
+  --color-sage: var(--color-sage);
+
+  --color-brown: var(--color-brown);
+  --color-dark-brown: var(--color-dark-brown);
+
+  --color-card: var(--card);
+  --color-border: var(--border);
+}
+
+/* ---------------------------------------------------------
+   Global Body Styling
+--------------------------------------------------------- */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+/* ---------------------------------------------------------
+   Inputs, Textareas, Selects
+--------------------------------------------------------- */
+input,
+textarea,
+select {
+  background-color: var(--color-light-sage);
+  border: 1px solid var(--color-brown);
+  color: var(--color-dark-brown);
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.95rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-sage);
+  box-shadow: 0 0 0 2px var(--color-sage);
+}
+
+/* ---------------------------------------------------------
+   Labels
+--------------------------------------------------------- */
+label {
+  color: var(--color-dark-brown);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  display: inline-block;
+}
+
+/* ---------------------------------------------------------
+   Card Containers
+--------------------------------------------------------- */
+.card,
+.bg-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ---------------------------------------------------------
+   Utility Overrides (Optional but helpful, just keep it pls)
+--------------------------------------------------------- */
+.text-dark-brown {
+  color: var(--color-dark-brown);
+}
+
+.text-brown {
+  color: var(--color-brown);
+}
+
+.bg-cream {
+  background: var(--color-cream);
+}
+
+.bg-light-sage {
+  background: var(--color-light-sage);
+}
+
+.bg-sage {
+  background: var(--color-sage);
+}
+
+/* ---------------------------------------------------------
+   Buttons 
+--------------------------------------------------------- */
+button {
+  font-family: var(--font-sans);
+}
+
+img {
+  user-select: none;
 }
