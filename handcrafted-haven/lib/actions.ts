@@ -6,20 +6,14 @@ import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-const RegisterSchema = z.object({
-    name: z.string().min(1, 'Name is required'),
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
-    role: z.enum(['buyer', 'seller']),
-});
-
-export async function authenticate(
-    prevState: string | undefined,
-    formData: FormData,
-) {
+// ------------------------------
+// AUTHENTICATION
+// ------------------------------
+export async function authenticate(prevState: string | undefined, formData: FormData) {
     try {
         await signIn('credentials', formData);
     } catch (error) {
@@ -35,10 +29,17 @@ export async function authenticate(
     }
 }
 
-export async function register(
-    prevState: string | undefined,
-    formData: FormData,
-) {
+// ------------------------------
+// REGISTER NEW USER
+// ------------------------------
+const RegisterSchema = z.object({
+    name: z.string().min(1, 'Name is required'),
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    role: z.enum(['buyer', 'seller']),
+});
+
+export async function register(prevState: string | undefined, formData: FormData) {
     const validatedFields = RegisterSchema.safeParse({
         name: formData.get('name'),
         email: formData.get('email'),
@@ -54,16 +55,15 @@ export async function register(
     const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
-        // Check if user already exists
         const existingUser = await sql`SELECT * FROM users WHERE email=${email}`;
         if (existingUser.length > 0) {
             return 'Email already in use.';
         }
 
         await sql`
-      INSERT INTO users (id, name, email, password, role)
-      VALUES (${crypto.randomUUID()}, ${name}, ${email}, ${hashedPassword}, ${role})
-    `;
+            INSERT INTO users (id, name, email, password, role)
+            VALUES (${crypto.randomUUID()}, ${name}, ${email}, ${hashedPassword}, ${role})
+        `;
     } catch (error) {
         console.error('Failed to register user:', error);
         return 'Database Error: Failed to Register.';
@@ -72,16 +72,18 @@ export async function register(
     redirect('/login');
 }
 
-const CreateProductSchema = z.object({
-    name: z.string().min(1, 'Name is required'),
-    price: z.coerce.number().gt(0, 'Price must be greater than 0'),
-    category: z.string().min(1, 'Category is required'),
-    description: z.string().min(1, 'Description is required'),
-    imageUrl: z.string().min(1, 'Image is required'),
-    sellerId: z.string().min(1, 'Seller ID is required'),
-});
+// ------------------------------
+// CREATE PRODUCT
+// ------------------------------
 
-import { revalidatePath } from 'next/cache';
+const CreateProductSchema = z.object({
+    name: z.string().min(1),
+    price: z.coerce.number().gt(0),
+    category: z.string().min(1),
+    description: z.string().min(1),
+    imageUrl: z.string().min(1),
+    sellerId: z.string().min(1),
+});
 
 export async function createProduct(formData: FormData) {
     const validatedFields = CreateProductSchema.safeParse({
@@ -102,8 +104,8 @@ export async function createProduct(formData: FormData) {
 
     try {
         await sql`
-        INSERT INTO products (id, name, description, price, category, seller_id, image_url)
-        VALUES (${id}, ${name}, ${description}, ${price}, ${category}, ${sellerId}, ${imageUrl})
+            INSERT INTO products (id, name, description, price, category, seller_id, image_url)
+            VALUES (${id}, ${name}, ${description}, ${price}, ${category}, ${sellerId}, ${imageUrl})
         `;
     } catch (error) {
         console.error('Failed to create product:', error);
@@ -113,4 +115,51 @@ export async function createProduct(formData: FormData) {
     revalidatePath(`/seller/${sellerId}`);
     revalidatePath('/products');
     return { message: 'Success' };
+}
+
+// ------------------------------
+// UPDATE SELLER PROFILE  
+// ------------------------------
+
+const UpdateSellerSchema = z.object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    email: z.string().email(),
+    bio: z.string().optional(),
+    profileImageUrl: z.string().optional(),
+});
+
+export async function updateSellerProfile(formData: FormData) {
+    const parsed = UpdateSellerSchema.safeParse({
+        id: formData.get("id"),
+        name: formData.get("name"),
+        email: formData.get("email"),
+        bio: formData.get("bio"),
+        profileImageUrl: formData.get("profileImageUrl"),
+    });
+
+    if (!parsed.success) {
+        console.error(parsed.error);
+        return { success: false, message: "Invalid fields." };
+    }
+
+    const { id, name, email, bio, profileImageUrl } = parsed.data;
+
+    try {
+        await sql`
+            UPDATE sellers
+            SET 
+                name = ${name},
+                email = ${email},
+                bio = ${bio || null},
+                profile_image_url = ${profileImageUrl || null}
+            WHERE id = ${id}
+        `;
+    } catch (error) {
+        console.error("Failed to update seller:", error);
+        return { success: false, message: "Database update failed." };
+    }
+
+    revalidatePath(`/seller/${id}`);
+    return { success: true };
 }

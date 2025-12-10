@@ -1,129 +1,119 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState } from "react";
 import { getSellerById } from "@/lib/data";
-import { useParams } from "next/navigation";
+import { updateSellerProfile } from "@/lib/actions";
 
 export default function SellerProfileEditPage() {
-    const params = useParams();
-    const id = params?.id as string;
-
-    const [displayName, setDisplayName] = useState("");
-    const [email, setEmail] = useState("");
-    const [bio, setBio] = useState("");
-    const [profileImageUrl, setProfileImageUrl] = useState("");
-    const [status, setStatus] = useState<string | null>(null);
+    const [seller, setSeller] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [status, setStatus] = useState("");
+
+    // Example path: /seller/123/profile → index 2 = sellerId
+    const id = typeof window !== "undefined"
+        ? window.location.pathname.split("/")[2]
+        : "";
 
     useEffect(() => {
         if (!id) return;
-        getSellerById(id).then((seller) => {
-            if (seller) {
-                setDisplayName(seller.name);
-                setEmail(seller.email);
-                setBio(seller.bio);
-                setProfileImageUrl(seller.profileImageUrl);
-            }
+
+        getSellerById(id).then((s) => {
+            setSeller(s);
             setLoading(false);
         });
     }, [id]);
 
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        console.log("Saving profile for:", id, {
-            displayName,
-            email,
-            bio,
-            profileImageUrl,
-        });
-        setStatus("Profile saved (mock)");
-    };
-
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <p>Loading...</p>;
+    if (!seller) return <p>Seller not found.</p>;
 
     return (
         <main className="max-w-2xl mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-6">
-                Edit Seller Profile
+                Edit Profile
             </h1>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            {/* IMPORTANT: This directly calls the server action */}
+            <form
+                action={async (formData) => {
+                    const res = await updateSellerProfile(formData);
+                    if (res.success) {
+                        setStatus("Profile updated successfully!");
+                    } else {
+                        setStatus(res.message || "Failed to update profile.");
+                    }
+                }}
+                className="space-y-6"
+            >
+                {/* Hidden Seller ID */}
+                <input type="hidden" name="id" value={seller.id} />
+
+                {/* Display Name */}
                 <div>
-                    <label htmlFor="displayName" className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700">
                         Display Name
                     </label>
                     <input
-                        id="displayName"
-                        type="text"
-                        value={displayName}
-                        onChange={(e) => setDisplayName(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        name="name"
+                        defaultValue={seller.name}
+                        className="mt-1 block w-full rounded-md border px-3 py-2"
                         required
                     />
                 </div>
 
+                {/* Email */}
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                        Contact Email
+                    <label className="block text-sm font-medium text-gray-700">
+                        Email
                     </label>
                     <input
-                        id="email"
+                        name="email"
                         type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        defaultValue={seller.email}
+                        className="mt-1 block w-full rounded-md border px-3 py-2"
                         required
                     />
                 </div>
 
+                {/* Bio */}
                 <div>
-                    <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
-                        Bio / Story
+                    <label className="block text-sm font-medium text-gray-700">
+                        Bio
                     </label>
                     <textarea
-                        id="bio"
-                        value={bio}
-                        onChange={(e) => setBio(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        name="bio"
+                        defaultValue={seller.bio}
                         rows={4}
-                    />
+                        className="mt-1 block w-full rounded-md border px-3 py-2"
+                    ></textarea>
                 </div>
 
+                {/* Profile Image URL */}
                 <div>
-                    <label htmlFor="profileImageUrl" className="block text-sm font-medium text-gray-700">
+                    <label className="block text-sm font-medium text-gray-700">
                         Profile Image URL
                     </label>
                     <input
-                        id="profileImageUrl"
-                        type="url"
-                        value={profileImageUrl}
-                        onChange={(e) => setProfileImageUrl(e.target.value)}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        name="profileImageUrl"
+                        defaultValue={seller.profileImageUrl || ""}
+                        className="mt-1 block w-full rounded-md border px-3 py-2"
                     />
-                    {profileImageUrl && (
-                        <div className="mt-3 w-24 h-24 rounded-full overflow-hidden bg-gray-200">
-                            <img
-                                src={profileImageUrl}
-                                alt="Profile preview"
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                    )}
                 </div>
 
+                {/* Save Button */}
                 <button
                     type="submit"
-                    className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="px-4 py-2 rounded-md bg-[var(--color-sage)] text-[var(--color-dark-brown)] font-semibold hover:bg-[var(--color-light-sage)] transition"
                 >
                     Save Profile
                 </button>
-
-                {status && (
-                    <p className="mt-2 text-sm text-green-600" aria-live="polite">
-                        {status}
-                    </p>
-                )}
             </form>
+
+            {/* Status Message */}
+            {status && (
+                <p className="text-sm mt-3 text-green-700 font-medium">
+                    {status}
+                </p>
+            )}
         </main>
     );
 }
