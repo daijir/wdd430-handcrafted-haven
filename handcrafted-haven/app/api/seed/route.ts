@@ -15,7 +15,7 @@ export async function GET() {
             await client.query('BEGIN');
 
             // Drop existing tables to ensure schema consistency (re-defining IDs as VARCHAR)
-            await client.query(`DROP TABLE IF EXISTS products, sellers, users CASCADE;`);
+            await client.query(`DROP TABLE IF EXISTS reviews, products, sellers, users CASCADE;`);
 
             // Create Users Table
             await client.query(`
@@ -49,6 +49,19 @@ export async function GET() {
                     category VARCHAR(255),
                     seller_id VARCHAR(255) REFERENCES sellers(id),
                     image_url TEXT
+                );
+            `);
+
+            // Create Reviews Table
+            await client.query(`
+                CREATE TABLE IF NOT EXISTS reviews (
+                    id VARCHAR(255) PRIMARY KEY,
+                    product_id VARCHAR(255) NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+                    user_id VARCHAR(255) NOT NULL,
+                    user_name VARCHAR(255) NOT NULL,
+                    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+                    text TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             `);
 
